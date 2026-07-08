@@ -240,14 +240,86 @@ func TestMatch(t *testing.T) {
 		assert.Equal(t, "bank-debit-match", results[0].Bank.Unique_Identifier)
 		assert.True(t, results[0].Discrepancy.Equal(decimal.RequireFromString("0")))
 	})
+
+	t.Run("prefers same-day bank date over next-day midnight for late transactions", func(t *testing.T) {
+		r := &recon{}
+
+		systemData := []SystemData{
+			{
+				TrxID:           "trx-late",
+				Amount:          decimal.RequireFromString("100"),
+				Type:            TxTypeCredit,
+				TransactionTime: at(2026, time.January, 10, 23, 0),
+			},
+		}
+		bankData := []BankData{
+			{
+				Unique_Identifier: "bank-next-day",
+				Amount:            decimal.RequireFromString("100"),
+				Date:              dateOnly(2026, time.January, 11),
+			},
+			{
+				Unique_Identifier: "bank-same-day",
+				Amount:            decimal.RequireFromString("100"),
+				Date:              dateOnly(2026, time.January, 10),
+			},
+		}
+
+		results := r.match(context.Background(), Tolerance{Amount: 0, Days: 1}, systemData, bankData)
+
+		if !assert.Len(t, results, 2) {
+			return
+		}
+
+		assert.True(t, results[0].Match)
+		assert.Equal(t, "bank-same-day", results[0].Bank.Unique_Identifier)
+		assert.False(t, results[1].Match)
+		assert.Equal(t, "bank-next-day", results[1].Bank.Unique_Identifier)
+	})
+
+	t.Run("uses deterministic tie break for duplicate same-day candidates", func(t *testing.T) {
+		r := &recon{}
+
+		systemData := []SystemData{
+			{
+				TrxID:           "trx-duplicate",
+				Amount:          decimal.RequireFromString("100"),
+				Type:            TxTypeCredit,
+				TransactionTime: at(2026, time.January, 10, 12, 0),
+			},
+		}
+		bankData := []BankData{
+			{
+				Unique_Identifier: "bank-b",
+				Amount:            decimal.RequireFromString("100"),
+				Date:              dateOnly(2026, time.January, 10),
+			},
+			{
+				Unique_Identifier: "bank-a",
+				Amount:            decimal.RequireFromString("100"),
+				Date:              dateOnly(2026, time.January, 10),
+			},
+		}
+
+		results := r.match(context.Background(), Tolerance{Amount: 0, Days: 0}, systemData, bankData)
+
+		if !assert.Len(t, results, 2) {
+			return
+		}
+
+		assert.True(t, results[0].Match)
+		assert.Equal(t, "bank-a", results[0].Bank.Unique_Identifier)
+		assert.False(t, results[1].Match)
+		assert.Equal(t, "bank-b", results[1].Bank.Unique_Identifier)
+	})
 }
 
 func at(year int, month time.Month, day, hour, minute int) time.Time {
 	return time.Date(year, month, day, hour, minute, 0, 0, time.UTC)
 }
 
-func dateOnly(year int, month time.Month, day int) timepkg.DateOnly {
-	return timepkg.DateOnly{
+func dateOnly(year int, month time.Month, day int) timepkg.Date {
+	return timepkg.Date{
 		Time: time.Date(year, month, day, 0, 0, 0, 0, time.UTC),
 	}
 }

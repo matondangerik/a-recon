@@ -15,6 +15,9 @@ import (
 // @return match result
 func (r *recon) match(ctx context.Context, Tolerance Tolerance, systemData []SystemData, bankData []BankData) (results []matchResult) {
 	sort.Slice(bankData, func(i, j int) bool {
+		if bankData[i].Date.Equal(bankData[j].Date.Time) {
+			return bankData[i].Unique_Identifier < bankData[j].Unique_Identifier
+		}
 		return bankData[i].Date.Before(bankData[j].Date.Time)
 	})
 	sort.Slice(systemData, func(i, j int) bool {
@@ -63,7 +66,7 @@ func (r *recon) match(ctx context.Context, Tolerance Tolerance, systemData []Sys
 // @return match system data or empty if not found
 // @return remaining bank data that not matched
 func (r *recon) findMatch(_ context.Context, Tolerance Tolerance, system SystemData, bank []BankData) (bestmatch BankData, discrepancy decimal.Decimal, remaining []BankData) {
-	txTime := system.TransactionTime.Truncate(24 * time.Hour)
+	txTime := startOfDay(system.TransactionTime)
 
 	startTolerance := txTime.AddDate(0, 0, -Tolerance.Days)
 	endTolerance := txTime.AddDate(0, 0, Tolerance.Days)
@@ -91,10 +94,10 @@ func (r *recon) findMatch(_ context.Context, Tolerance Tolerance, system SystemD
 		}
 
 		var d int64
-		if bank.Date.Before(system.TransactionTime) {
-			d = system.TransactionTime.Sub(bank.Date.Time).Microseconds()
+		if bank.Date.Before(txTime) {
+			d = txTime.Sub(bank.Date.Time).Microseconds()
 		} else {
-			d = bank.Date.Time.Sub(system.TransactionTime).Microseconds()
+			d = bank.Date.Time.Sub(txTime).Microseconds()
 		}
 
 		if idx < 0 || d < delta {
@@ -135,4 +138,8 @@ func (f *recon) getDiscrepancy(system SystemData, bank BankData) (valid bool, di
 		valid = true
 	}
 	return valid, discrepancy
+}
+
+func startOfDay(t time.Time) time.Time {
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }

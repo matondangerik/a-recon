@@ -1,14 +1,14 @@
 package time
 
 import (
-	stdtime "time"
 	"testing"
+	stdtime "time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDateOnlyUnmarshalCSV(t *testing.T) {
-	var d DateOnly
+	var d Date
 
 	err := d.UnmarshalCSV("2026-01-10")
 
@@ -18,7 +18,7 @@ func TestDateOnlyUnmarshalCSV(t *testing.T) {
 }
 
 func TestDateOnlyUnmarshalCSVRejectsTimestamp(t *testing.T) {
-	var d DateOnly
+	var d Date
 
 	err := d.UnmarshalCSV("2026-01-10T00:00:00Z")
 
