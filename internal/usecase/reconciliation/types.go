@@ -9,9 +9,9 @@ import (
 )
 
 type BankData struct {
-	Unique_Identifier string           `csv:"unique_identifier"`
-	Amount            decimal.Decimal  `csv:"amount"`
-	Date              timepkg.DateOnly `csv:"date"`
+	Unique_Identifier string          `csv:"unique_identifier"`
+	Amount            decimal.Decimal `csv:"amount"`
+	Date              timepkg.Date    `csv:"date"`
 	BankName          string
 }
 

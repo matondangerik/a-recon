@@ -136,8 +136,8 @@ func captureStdout(t *testing.T, fn func()) string {
 	return string(output)
 }
 
-func dateOnly(year int, month time.Month, day int) timepkg.DateOnly {
-	return timepkg.DateOnly{
+func dateOnly(year int, month time.Month, day int) timepkg.Date {
+	return timepkg.Date{
 		Time: time.Date(year, month, day, 0, 0, 0, 0, time.UTC),
 	}
 }
