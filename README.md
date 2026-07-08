@@ -33,6 +33,8 @@ The exercise leaves a few things open, so I made these choices:
 - the CLI derives bank names from the bank file basename without extension
   - `bank-a.csv` -> `bank-a`
 - all time values are assumed to be UTC
+- system `transaction_time` is expected in RFC3339 UTC format
+  - example: `2026-01-10T10:00:00Z`
 - system amounts are non-negative and direction comes from `type`
 - bank amounts use sign for direction
   - negative = debit
