@@ -55,8 +55,6 @@ type ReconciliationArgs struct {
 	File      File
 	Tolerance Tolerance
 	Range     Range
-
-	PerBank bool
 }
 
 type ReconciliationResult struct {
