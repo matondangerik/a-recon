@@ -58,12 +58,12 @@ func TestReconcile(t *testing.T) {
 	)
 	bankAPath := writeTempCSV(t, dir, "bank-a.csv", ""+
 		"unique_identifier,amount,date\n"+
-		"bank-credit,103,2026-01-10T10:00:00Z\n"+
-		"bank-unmatched,60,2026-01-10T13:00:00Z\n",
+		"bank-credit,103,2026-01-10\n"+
+		"bank-unmatched,60,2026-01-10\n",
 	)
 	bankBPath := writeTempCSV(t, dir, "bank-b.csv", ""+
 		"unique_identifier,amount,date\n"+
-		"bank-debit,-100,2026-01-10T11:00:00Z\n",
+		"bank-debit,-100,2026-01-10\n",
 	)
 
 	result, err := r.Reconcile(context.Background(), ReconciliationArgs{

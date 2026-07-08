@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/matondangerik/a-recon/internal/usecase/reconciliation"
+	timepkg "github.com/matondangerik/a-recon/pkg/time"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
@@ -32,7 +33,7 @@ func TestRenderResult(t *testing.T) {
 					Unique_Identifier: "bank-b-1",
 					BankName:          "bank-b",
 					Amount:            decimal.RequireFromString("60"),
-					Date:              time.Date(2026, time.January, 11, 0, 0, 0, 0, time.UTC),
+					Date:              dateOnly(2026, time.January, 11),
 				},
 			},
 			"bank-a": {
@@ -40,7 +41,7 @@ func TestRenderResult(t *testing.T) {
 					Unique_Identifier: "bank-a-1",
 					BankName:          "bank-a",
 					Amount:            decimal.RequireFromString("20"),
-					Date:              time.Date(2026, time.January, 9, 0, 0, 0, 0, time.UTC),
+					Date:              dateOnly(2026, time.January, 9),
 				},
 			},
 		},
@@ -133,4 +134,10 @@ func captureStdout(t *testing.T, fn func()) string {
 	}
 
 	return string(output)
+}
+
+func dateOnly(year int, month time.Month, day int) timepkg.DateOnly {
+	return timepkg.DateOnly{
+		Time: time.Date(year, month, day, 0, 0, 0, 0, time.UTC),
+	}
 }

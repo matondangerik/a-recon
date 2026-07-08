@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	timepkg "github.com/matondangerik/a-recon/pkg/time"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
@@ -31,12 +32,12 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-unmatched",
 				Amount:            decimal.RequireFromString("-25"),
-				Date:              at(2026, time.January, 11, 0, 0),
+				Date:              dateOnly(2026, time.January, 11),
 			},
 			{
 				Unique_Identifier: "bank-match",
 				Amount:            decimal.RequireFromString("103"),
-				Date:              at(2026, time.January, 10, 0, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 		}
 
@@ -76,12 +77,12 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-far",
 				Amount:            decimal.RequireFromString("100"),
-				Date:              at(2026, time.January, 9, 0, 0),
+				Date:              dateOnly(2026, time.January, 9),
 			},
 			{
 				Unique_Identifier: "bank-near",
 				Amount:            decimal.RequireFromString("100"),
-				Date:              at(2026, time.January, 10, 11, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 		}
 
@@ -111,7 +112,7 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-zero",
 				Amount:            decimal.Zero,
-				Date:              at(2026, time.January, 10, 0, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 		}
 
@@ -140,7 +141,7 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-outside",
 				Amount:            decimal.RequireFromString("106"),
-				Date:              at(2026, time.January, 12, 0, 0),
+				Date:              dateOnly(2026, time.January, 12),
 			},
 		}
 
@@ -174,17 +175,17 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-too-old",
 				Amount:            decimal.RequireFromString("-100"),
-				Date:              at(2026, time.January, 8, 0, 0),
+				Date:              dateOnly(2026, time.January, 8),
 			},
 			{
 				Unique_Identifier: "bank-wrong-amount",
 				Amount:            decimal.RequireFromString("-130"),
-				Date:              at(2026, time.January, 10, 11, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 			{
 				Unique_Identifier: "bank-debit-match",
 				Amount:            decimal.RequireFromString("-100"),
-				Date:              at(2026, time.January, 10, 13, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 		}
 
@@ -224,7 +225,7 @@ func TestMatch(t *testing.T) {
 			{
 				Unique_Identifier: "bank-debit-match",
 				Amount:            decimal.RequireFromString("-100"),
-				Date:              at(2026, time.January, 10, 13, 0),
+				Date:              dateOnly(2026, time.January, 10),
 			},
 		}
 
@@ -243,4 +244,10 @@ func TestMatch(t *testing.T) {
 
 func at(year int, month time.Month, day, hour, minute int) time.Time {
 	return time.Date(year, month, day, hour, minute, 0, 0, time.UTC)
+}
+
+func dateOnly(year int, month time.Month, day int) timepkg.DateOnly {
+	return timepkg.DateOnly{
+		Time: time.Date(year, month, day, 0, 0, 0, 0, time.UTC),
+	}
 }

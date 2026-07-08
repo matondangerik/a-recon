@@ -46,9 +46,9 @@ func TestParseBankData(t *testing.T) {
 	dir := t.TempDir()
 	path := writeTempCSV(t, dir, "bank.csv", ""+
 		"unique_identifier,amount,date\n"+
-		"bank-1,100,2026-01-10T00:00:00Z\n"+
-		"bank-2,120,2026-01-12T00:00:00Z\n"+
-		"bank-3,130,2026-01-15T00:00:00Z\n",
+		"bank-1,100,2026-01-10\n"+
+		"bank-2,120,2026-01-12\n"+
+		"bank-3,130,2026-01-15\n",
 	)
 
 	result, err := r.parseBankData(context.Background(), Range{
@@ -77,11 +77,11 @@ func TestParseReconciliationData(t *testing.T) {
 	)
 	bankAPath := writeTempCSV(t, dir, "bank-a.csv", ""+
 		"unique_identifier,amount,date\n"+
-		"bank-a-1,100,2026-01-10T00:00:00Z\n",
+		"bank-a-1,100,2026-01-10\n",
 	)
 	bankBPath := writeTempCSV(t, dir, "bank-b.csv", ""+
 		"unique_identifier,amount,date\n"+
-		"bank-b-1,-50,2026-01-10T00:00:00Z\n",
+		"bank-b-1,-50,2026-01-10\n",
 	)
 
 	systemData, bankData, err := r.parseReconciliationData(context.Background(), ReconciliationArgs{

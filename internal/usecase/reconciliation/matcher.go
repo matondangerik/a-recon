@@ -15,7 +15,7 @@ import (
 // @return match result
 func (r *recon) match(ctx context.Context, Tolerance Tolerance, systemData []SystemData, bankData []BankData) (results []matchResult) {
 	sort.Slice(bankData, func(i, j int) bool {
-		return bankData[i].Date.Before(bankData[j].Date)
+		return bankData[i].Date.Before(bankData[j].Date.Time)
 	})
 	sort.Slice(systemData, func(i, j int) bool {
 		return systemData[i].TransactionTime.Before(systemData[j].TransactionTime)
@@ -92,9 +92,9 @@ func (r *recon) findMatch(_ context.Context, Tolerance Tolerance, system SystemD
 
 		var d int64
 		if bank.Date.Before(system.TransactionTime) {
-			d = system.TransactionTime.Sub(bank.Date).Microseconds()
+			d = system.TransactionTime.Sub(bank.Date.Time).Microseconds()
 		} else {
-			d = bank.Date.Sub(system.TransactionTime).Microseconds()
+			d = bank.Date.Time.Sub(system.TransactionTime).Microseconds()
 		}
 
 		if idx < 0 || d < delta {
