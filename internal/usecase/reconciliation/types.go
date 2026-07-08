@@ -4,13 +4,14 @@ import (
 	"context"
 	"time"
 
+	timepkg "github.com/matondangerik/a-recon/pkg/time"
 	"github.com/shopspring/decimal"
 )
 
 type BankData struct {
-	Unique_Identifier string          `csv:"unique_identifier"`
-	Amount            decimal.Decimal `csv:"amount"`
-	Date              time.Time       `csv:"date"`
+	Unique_Identifier string           `csv:"unique_identifier"`
+	Amount            decimal.Decimal  `csv:"amount"`
+	Date              timepkg.DateOnly `csv:"date"`
 	BankName          string
 }
 
