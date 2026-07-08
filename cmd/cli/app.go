@@ -38,7 +38,7 @@ func main() {
 
 	bankPaths := make(map[string]string)
 	for _, path := range strings.Split(*bankStatementPaths, ",") {
-		bankName := filepath.Base(path)
+		bankName := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 		bankPaths[bankName] = path
 	}
 
