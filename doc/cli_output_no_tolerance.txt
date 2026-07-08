@@ -1,0 +1,20 @@
+Metric              Value
+Total Transactions  16
+Total Matched       3
+Total Unmatched     13
+Total Discrepancy   0
+
+Status     System ID            Bank    Transaction Date  Amount  Details
+UNMATCHED  trx-credit-match     N/A     2026-01-10        100     No matching bank transaction found
+UNMATCHED  trx-system-only      N/A     2026-01-10        40      No matching bank transaction found
+UNMATCHED  trx-amount-boundary  N/A     2026-01-11        100     No matching bank transaction found
+UNMATCHED  trx-amount-outside   N/A     2026-01-12        100     No matching bank transaction found
+UNMATCHED  trx-date-boundary    N/A     2026-01-13        100     No matching bank transaction found
+UNMATCHED  trx-debit-boundary   N/A     2026-01-17        100     No matching bank transaction found
+ORPHANED   N/A                  bank-a  2026-01-10        103     No matching system transaction found
+ORPHANED   N/A                  bank-a  2026-01-10        60      No matching system transaction found
+ORPHANED   N/A                  bank-a  2026-01-11        105     No matching system transaction found
+ORPHANED   N/A                  bank-a  2026-01-12        106     No matching system transaction found
+ORPHANED   N/A                  bank-a  2026-01-14        100     No matching system transaction found
+ORPHANED   N/A                  bank-a  2026-01-14        100     No matching system transaction found
+ORPHANED   N/A                  bank-b  2026-01-17        -103    No matching system transaction found

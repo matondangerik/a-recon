@@ -1,0 +1,11 @@
+trx_id,amount,type,transaction_time,bank_name
+trx-credit-match,100,CREDIT,2026-01-10T10:00:00Z,bank-a
+trx-debit-match,100,DEBIT,2026-01-10T11:00:00Z,bank-b
+trx-system-only,40,CREDIT,2026-01-10T12:00:00Z,bank-a
+trx-amount-boundary,100,CREDIT,2026-01-11T10:00:00Z,bank-a
+trx-amount-outside,100,CREDIT,2026-01-12T10:00:00Z,bank-a
+trx-date-boundary,100,CREDIT,2026-01-13T10:00:00Z,bank-a
+trx-duplicate,100,CREDIT,2026-01-14T12:00:00Z,bank-a
+trx-zero,0,CREDIT,2026-01-15T08:00:00Z,bank-a
+trx-ignored,50,CREDIT,2026-01-16T10:00:00Z,bank-missing
+trx-debit-boundary,100,DEBIT,2026-01-17T11:00:00Z,bank-b
