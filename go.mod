@@ -4,6 +4,7 @@ go 1.25.7
 
 require (
 	github.com/gocarina/gocsv v0.0.0-20260628180327-50907998929c
+	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.11.1
 )
 
